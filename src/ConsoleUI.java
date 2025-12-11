@@ -71,7 +71,22 @@ public class ConsoleUI {
         }
     }
 
-    private void handleLogin() {}
+    private void handleLogin() {
+        System.out.print("Admin username: ");
+        String username = scanner.nextLine();
+        AdminUser admin = new AdminUser(username);
+
+        System.out.print("Admin password: ");
+        String password = scanner.nextLine();
+
+        if (admin.checkPassword(password)) {
+            currentUser = admin;
+            System.out.println("Logged in as admin.");
+        }
+        else {
+            System.out.println("Wrong password, still a guest.");
+        }
+    }
     private void switchToGuest() {}
     private void addContact() {}
     private void updateContact() {}
