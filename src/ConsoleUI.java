@@ -87,8 +87,111 @@ public class ConsoleUI {
             System.out.println("Wrong password, still a guest.");
         }
     }
-    private void switchToGuest() {}
-    private void addContact() {}
-    private void updateContact() {}
-    private void deleteContact() {}
+
+    private void switchToGuest() {
+        currentUser = new GuestUser("guest");
+        System.out.println("Switched to guest.");
+    }
+
+    private void addContact() {
+        if (!currentUser.canCreate()) {
+            System.out.println("You must be admin to add.");
+            return;
+        }
+
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+
+        int age = readInt("Age: ");
+
+        System.out.print("Address: ");
+        String address = scanner.nextLine();
+
+        System.out.print("Phone: ");
+        String phone = scanner.nextLine();
+
+        Contact c = new Contact(name, age, address, phone);
+        manager.addContact(c);
+        System.out.println("Added: " + c);
+    }
+    private void updateContact() {
+        if (!currentUser.canUpdate()) {
+            System.out.println("You must be admin to update.");
+            return;
+        }
+        System.out.print("name of contact to update: ");
+        String name = scanner.nextLine();
+        Contact c = manager.findFirstByName(name);
+        if (c == null) {
+            System.out.println("No contact found with that name.");
+            return;
+        }
+
+        System.out.print("New name [" + c.getName() + "]: ");
+        String newName = scanner.nextLine();
+        if (newName.isBlank())
+            newName = c.getName();
+
+        System.out.print("New age [" + c.getAge() + "]: ");
+        String ageStr = scanner.nextLine();
+        int newAge = c.getAge();
+        if (!ageStr.isBlank()) {
+            try {
+                newAge = Integer.parseInt(ageStr);
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Invalid age, keeping old.");
+            }
+        }
+
+        System.out.print("New address [" + c.getAddress() + "]: ");
+        String newAddress = scanner.nextLine();
+        if (newAddress.isBlank())
+            newAddress = c.getAddress();
+
+        System.out.print("New phone [" + c.getPhone() + "]: ");
+        String newPhone = scanner.nextLine();
+        if (newPhone.isBlank())
+            newPhone = c.getPhone();
+
+        manager.updateContact(c, newName, newAge, newAddress, newPhone);
+        System.out.println("Updated: " + c);
+    }
+    private void deleteContact() {
+        if (!currentUser.canDelete()) {
+            System.out.println("You must be admin to delete.");
+            return;
+        }
+
+        System.out.print("Name of contact to delete: ");
+        String name = scanner.nextLine();
+        Contact c = manager.findFirstByName(name);
+        if (c == null) {
+            System.out.println("No contact found with that name.");
+            return;
+        }
+
+        System.out.print("Type 'yes' to confirm delete: ");
+        String confirm = scanner.nextLine().trim();
+        if ("yes".equalsIgnoreCase(confirm)) {
+            manager.deleteContact(c);
+            System.out.println("Deleted.");
+        }
+        else {
+            System.out.println("cancelled.");
+        }
+    }
+
+    private int readInt(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String line = scanner.nextLine();
+            try {
+                return Integer.parseInt(line.trim());
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Please enter a number.");
+            }
+        }
+    }
 }
