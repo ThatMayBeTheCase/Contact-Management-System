@@ -13,10 +13,15 @@ public class ContactManager {
         return contacts;
     }
 
-    //public void updateContact(String name, int age, String address, int phone){
-   // }
+    public void updateContact(Contact contact, String newName, int newAge, String newAddress, String newPhone) {
+        contact.setName(newName);
+        contact.setAge(newAge);
+        contact.setAddress(newAddress);
+        contact.setPhone(newPhone);
+    }
 
     public void deleteContact(Contact contact){
         contacts.remove(contact);
     }
+
 }
