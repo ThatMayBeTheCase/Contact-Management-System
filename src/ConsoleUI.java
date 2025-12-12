@@ -6,6 +6,29 @@ public class ConsoleUI {
     private final Scanner scanner = new Scanner(System.in);
     private User currentUser = new GuestUser("guest");
 
+    // Styling constants
+    private static final String RESET        = "\u001B[0m";
+
+    private static final String BRIGHT_BLUE  = "\u001B[94m";
+    private static final String BRIGHT_GREEN = "\u001B[92m";
+    private static final String BRIGHT_YELLOW= "\u001B[93m";
+    private static final String BRIGHT_RED   = "\u001B[91m";
+    private static final String BRIGHT_CYAN  = "\u001B[96m";
+    private static final String BRIGHT_PURPLE= "\u001B[95m";
+    private static final String WHITE        = "\u001B[37m";
+
+    private static final String TITLE_COLOR      = BRIGHT_BLUE;
+    private static final String ROLE_ADMIN_COLOR = BRIGHT_PURPLE;
+    private static final String ROLE_GUEST_COLOR = BRIGHT_CYAN;
+    private static final String ERROR_COLOR      = BRIGHT_RED;
+    private static final String SUCCESS_COLOR    = BRIGHT_GREEN;
+    private static final String INFO_COLOR       = BRIGHT_YELLOW;
+    private static final String PROMPT_COLOR     = WHITE;
+
+    public static final String ITALIC = "\u001B[3m";
+
+    private static final String SEP = "|=================================|";
+
     public ConsoleUI(ContactManager manager) {
         this.manager = manager;
     }
@@ -14,7 +37,7 @@ public class ConsoleUI {
         boolean running = true;
         while (running) {
             printMenu();
-            System.out.print("> ");
+            System.out.print(PROMPT_COLOR + "> " + RESET);
             String choice = scanner.nextLine().trim();
             switch (choice) {
                 case "1" -> handleLogin();
@@ -25,14 +48,20 @@ public class ConsoleUI {
                 case "6" -> deleteContact();
                 case "7" -> switchToGuest();
                 case "0" -> running = false;
-                default -> System.out.println("Invalid option.");
+                default -> System.out.println(ERROR_COLOR + "Invalid option." + RESET);
             }
         }
         System.out.println("Goodbye!");
     }
 
     private void printMenu() {
-        System.out.println("\n[ " + roleLabel() + " ] Select an option:");
+        System.out.println();
+        System.out.println(TITLE_COLOR + SEP + RESET);
+        System.out.println(TITLE_COLOR + " ~ • " + RESET + "Contact Management System" + TITLE_COLOR + " • ~ " + RESET);
+        System.out.println(TITLE_COLOR + SEP + RESET);
+
+        System.out.println("Current role: " + roleLabel());
+        System.out.println();
         System.out.println("1) Log in as admin");
 
         if (currentUser instanceof AdminUser) {
@@ -45,18 +74,23 @@ public class ConsoleUI {
         } else {
             System.out.println("2) List contacts");
             System.out.println("3) Search contacts");
+            System.out.println(INFO_COLOR + ITALIC + "   (Log in to see admin options)" + RESET);
         }
         System.out.println("0) Quit");
     }
 
     private String roleLabel() {
-        return (currentUser instanceof AdminUser) ? "Admin" : "Guest";
+        if (currentUser instanceof AdminUser) {
+            return ROLE_ADMIN_COLOR + "[ ADMIN ]" + RESET;
+        } else {
+            return ROLE_GUEST_COLOR + "[ GUEST ]" + RESET;
+        }
     }
 
     private void listContacts() {
         List<Contact> contacts = manager.getContacts();
         if (contacts.isEmpty()) {
-            System.out.println("No contacts found.");
+            System.out.println(INFO_COLOR + "No contacts found." + RESET);
             return;
         }
         for (Contact c : contacts) {
@@ -69,7 +103,7 @@ public class ConsoleUI {
         String term = scanner.nextLine();
         List<Contact> matches = manager.search(term);
         if (matches.isEmpty()) {
-            System.out.println("No matches.");
+            System.out.println(INFO_COLOR + "No matches." + RESET);
             return;
         }
         for (Contact c : matches) {
@@ -86,22 +120,32 @@ public class ConsoleUI {
         String password = scanner.nextLine();
 
         if (admin.checkPassword(password)) {
+            System.out.println(ITALIC + "Verifying admin credentials ..." + RESET);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+            }
             currentUser = admin;
-            System.out.println("Logged in as admin.");
+            System.out.println(SUCCESS_COLOR + "Logged in as admin." + RESET);
         }
         else {
-            System.out.println("Wrong password, still a guest.");
+            System.out.println(ERROR_COLOR + "Wrong password." + RESET);
         }
     }
 
     private void switchToGuest() {
+        System.out.println(ITALIC + "Signing out ..." + RESET);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+            }
         currentUser = new GuestUser("guest");
-        System.out.println("Switched to guest.");
+        System.out.println(SUCCESS_COLOR + "Switched to guest." + RESET);
     }
 
     private void addContact() {
         if (!currentUser.canCreate()) {
-            System.out.println("That option is only available for admin users.");
+            System.out.println(ERROR_COLOR + "Invalid option." + RESET);
             return;
         }
 
@@ -122,7 +166,7 @@ public class ConsoleUI {
     }
     private void updateContact() {
         if (!currentUser.canUpdate()) {
-            System.out.println("That option is only available for admin users.");
+            System.out.println(ERROR_COLOR + "Invalid option." + RESET);
             return;
         }
         System.out.print("Name of contact to update: ");
