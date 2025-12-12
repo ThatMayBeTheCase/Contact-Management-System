@@ -18,12 +18,12 @@ public class ConsoleUI {
             String choice = scanner.nextLine().trim();
             switch (choice) {
                 case "1" -> handleLogin();
-                case "2" -> switchToGuest();
-                case "3" -> listContacts();
-                case "4" -> searchContacts();
-                case "5" -> addContact();
-                case "6" -> updateContact();
-                case "7" -> deleteContact();
+                case "2" -> listContacts();
+                case "3" -> searchContacts();
+                case "4" -> addContact();
+                case "5" -> updateContact();
+                case "6" -> deleteContact();
+                case "7" -> switchToGuest();
                 case "0" -> running = false;
                 default -> System.out.println("Invalid option.");
             }
@@ -34,17 +34,23 @@ public class ConsoleUI {
     private void printMenu() {
         System.out.println("\n[ " + roleLabel() + " ] Select an option:");
         System.out.println("1) Log in as admin");
-        System.out.println("2) Log out");
-        System.out.println("3) List contacts");
-        System.out.println("4) Search contacts");
-        System.out.println("5) Add contact");
-        System.out.println("6) Update contact");
-        System.out.println("7) Delete contact");
+
+        if (currentUser instanceof AdminUser) {
+            System.out.println("2) List contacts");
+            System.out.println("3) Search contacts");
+            System.out.println("4) Add contact");
+            System.out.println("5) Update contact");
+            System.out.println("6) Delete contact");
+            System.out.println("7) Log out");
+        } else {
+            System.out.println("2) List contacts");
+            System.out.println("3) Search contacts");
+        }
         System.out.println("0) Quit");
     }
 
     private String roleLabel() {
-        return (currentUser instanceof AdminUser) ? "admin" : "guest";
+        return (currentUser instanceof AdminUser) ? "Admin" : "Guest";
     }
 
     private void listContacts() {
@@ -95,7 +101,7 @@ public class ConsoleUI {
 
     private void addContact() {
         if (!currentUser.canCreate()) {
-            System.out.println("You must be admin to add.");
+            System.out.println("That option is only available for admin users.");
             return;
         }
 
@@ -116,10 +122,10 @@ public class ConsoleUI {
     }
     private void updateContact() {
         if (!currentUser.canUpdate()) {
-            System.out.println("You must be admin to update.");
+            System.out.println("That option is only available for admin users.");
             return;
         }
-        System.out.print("name of contact to update: ");
+        System.out.print("Name of contact to update: ");
         String name = scanner.nextLine();
         Contact c = manager.findFirstByName(name);
         if (c == null) {
@@ -159,7 +165,7 @@ public class ConsoleUI {
     }
     private void deleteContact() {
         if (!currentUser.canDelete()) {
-            System.out.println("You must be admin to delete.");
+            System.out.println("That option is only available for admin users.");
             return;
         }
 
@@ -175,10 +181,10 @@ public class ConsoleUI {
         String confirm = scanner.nextLine().trim();
         if ("yes".equalsIgnoreCase(confirm)) {
             manager.deleteContact(c);
-            System.out.println("Deleted.");
+            System.out.println("Contact deleted.");
         }
         else {
-            System.out.println("cancelled.");
+            System.out.println("Cancelled.");
         }
     }
 
