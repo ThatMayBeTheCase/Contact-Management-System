@@ -62,7 +62,6 @@ public class ConsoleUI {
 
         System.out.println("Current role: " + roleLabel());
         System.out.println();
-        System.out.println("1) Log in as admin");
 
         if (currentUser instanceof AdminUser) {
             System.out.println("2) List contacts");
@@ -72,6 +71,7 @@ public class ConsoleUI {
             System.out.println("6) Delete contact");
             System.out.println("7) Log out");
         } else {
+            System.out.println("1) Log in as admin");
             System.out.println("2) List contacts");
             System.out.println("3) Search contacts");
             System.out.println(INFO_COLOR + ITALIC + "   (Log in to see admin options)" + RESET);
