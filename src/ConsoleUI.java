@@ -107,10 +107,11 @@ public class ConsoleUI {
                 System.out.print("Last name: ");
                 String ln = scanner.nextLine();
                 Contact c = search.findFirstByLastName(ln);
-                if (c == null)
+                if (c == null) {
                     System.out.println("No match.");
-                else
-                    System.out.println(c);
+                } else {
+                    printContactsTable(List.of(c));
+                }
             }
             case "2" -> {
                 System.out.print("First name: ");
