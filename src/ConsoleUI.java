@@ -101,7 +101,7 @@ public class ConsoleUI {
     private void searchContacts() {
         System.out.print("Search term: ");
         String term = scanner.nextLine();
-        List<Contact> matches = manager.search(term);
+        List<Contact> matches = search.freeSearch(term);
         if (matches.isEmpty()) {
             System.out.println(INFO_COLOR + "No matches." + RESET);
             return;
