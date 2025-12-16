@@ -1,25 +1,37 @@
-import java.util.ArrayList;
 import java.util.List;
 
+//ContactManager now uses ContactRepository for data persistence.
+
 public class ContactManager {
-    private final List<Contact> contacts = new ArrayList<>();
+    private final ContactRepository repository;
+
+    //Constructor - accepts a repository for dependency injection
+
+    public ContactManager(ContactRepository repository) {
+        this.repository = repository;
+    }
 
     public void addContact(Contact contact) {
-        contacts.add(contact);
+        repository.addContact(contact);
     }
 
     public List<Contact> getContacts() {
-        return contacts;
+        return repository.getContacts();
+    }
+
+    public Contact findFirstByName(String name) {
+        return repository.findFirstByName(name);
+    }
+
+    public List<Contact> search(String term) {
+        return repository.search(term);
     }
 
     public void updateContact(Contact contact, String newName, int newAge, String newAddress, String newPhone) {
-        contact.setName(newName);
-        contact.setAge(newAge);
-        contact.setAddress(newAddress);
-        contact.setPhone(newPhone);
+        repository.updateContact(contact, newName, newAge, newAddress, newPhone);
     }
 
     public void deleteContact(Contact contact) {
-        contacts.remove(contact);
+        repository.deleteContact(contact);
     }
 }
