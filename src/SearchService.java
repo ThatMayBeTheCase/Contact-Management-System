@@ -9,7 +9,20 @@ public class SearchService {
         this.manager = manager;
     }
 
-    public Contact findFirstByLastName(String LastName) {
+    private String norm(String s) {
+        return s == null ? "" : s.trim().toLowerCase(Locale.ROOT);
+    }
+
+    public Contact findFirstByName(String name) {
+        String needle = norm(name);
+        for (Contact c : manager.getContacts()) {
+            if (norm(c.getName()).equals(needle))
+                return c;
+        }
+        return null;
+    }
+
+    public Contact findFirstByLastName(String lastName) {
         String needle = norm (lastName);
         for (Contact c : manager.getContacts()) {
             if (c.getName() != null && c.getName().toLowerCase(Locale.ROOT).contains(needle)) {
@@ -19,13 +32,36 @@ public class SearchService {
         return null;
     }
 
-    public List<Contact> findByFirstName(String firstName) {}
+    public List<Contact> findByFirstName(String firstName) {
+        String needle = norm(firstName);
+        List<Contact> out = new ArrayList<>();
+        for (Contact c : manager.getContacts()) {
+            if (norm(c.getName()).contains(needle))out.add(c);
+        }
+        return out;
+    }
 
-    public List<Contact> findByStreet(String street) {}
+    public List<Contact> findByStreet(String street) {
+        String needle = norm(street);
+        List<Contact> out = new ArrayList<>();
+        for (Contact c : manager.getContacts()) {
+            if (norm(c.getAddress()).contains(needle))out.add(c);
+        }
+        return out;
+    }
 
-    public List<Contact> freeSearch(String term) {}
+    public List<Contact> freeSearch(String term) {
+        String needle = norm(term);
+        List<Contact> out = new ArrayList<>();
+        for (Contact c : manager.getContacts()) {
+            if (matches(c, needle)) out.add(c);
+        }
+        return out;
+    }
 
     // Free search helper
-    private boolean matches (Contact c, String needle) {}
+    private boolean matches (Contact c, String needle) {
+        return norm(c.getName()).contains(needle) || norm(c.getAddress()).contains(needle) || norm(c.getPhone()).contains(needle);
+    }
 
 }
