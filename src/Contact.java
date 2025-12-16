@@ -38,10 +38,10 @@ public class Contact {
         this.phone = phone;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "Contact{name='" + name + "', age=" + age +
                 ", address='" + address + "', phone='" + phone + "'}";
-    }
+    }*/
 
 }
