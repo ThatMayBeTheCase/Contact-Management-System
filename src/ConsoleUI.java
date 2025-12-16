@@ -90,14 +90,7 @@ public class ConsoleUI {
     }
 
     private void listContacts() {
-        List<Contact> contacts = manager.getContacts();
-        if (contacts.isEmpty()) {
-            System.out.println(INFO_COLOR + "No contacts found." + RESET);
-            return;
-        }
-        for (Contact c : contacts) {
-            System.out.println(c);
-        }
+        printContactsTable(manager.getContacts());
     }
 
     private void searchContacts() {
@@ -139,12 +132,7 @@ public class ConsoleUI {
     }
 
     private void printList(List<Contact> list) {
-        if (list == null || list.isEmpty()) {
-            System.out.println("No matches.");
-            return;
-        }
-        for (Contact c : list)
-            System.out.println(c);
+        printContactsTable(list);
     }
 
     private void handleLogin() {
@@ -156,7 +144,7 @@ public class ConsoleUI {
         String password = scanner.nextLine();
 
         if (admin.checkPassword(password)) {
-            System.out.println(ITALIC + "Verifying admin credentials ..." + RESET);
+            System.out.println(ITALIC + "\nVerifying admin credentials ..." + RESET);
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -198,8 +186,11 @@ public class ConsoleUI {
 
         Contact c = new Contact(name, age, address, phone);
         manager.addContact(c);
-        System.out.println("Added: " + c);
+        System.out.println(SUCCESS_COLOR + "\nContact added!" + RESET);
+        System.out.println("Name: " + c.getName() + ", Age: " + c.getAge() + ", Address: " + c.getAddress() + ", Phone: " + c.getPhone());
+        System.out.println();
     }
+
     private void updateContact() {
         if (!currentUser.canUpdate()) {
             System.out.println(ERROR_COLOR + "Invalid option." + RESET);
@@ -241,7 +232,9 @@ public class ConsoleUI {
             newPhone = c.getPhone();
 
         manager.updateContact(c, newName, newAge, newAddress, newPhone);
-        System.out.println("Updated: " + c);
+        System.out.println(SUCCESS_COLOR + "\nContact updated!" + RESET);
+        System.out.println("Name: " + c.getName() + ", Age: " + c.getAge() + ", Address: " + c.getAddress() + ", Phone: " + c.getPhone());
+        System.out.println();
     }
     private void deleteContact() {
         if (!currentUser.canDelete()) {
@@ -267,6 +260,38 @@ public class ConsoleUI {
             System.out.println("Cancelled.");
         }
     }
+
+    private void printContactsTable(List<Contact> contacts) {
+        if (contacts.isEmpty()) {
+            System.out.println(INFO_COLOR + "No contact found." + RESET);
+            return;
+        }
+
+        System.out.println(INFO_COLOR + "\nFound " + contacts.size() + " contacts." + RESET);
+
+        System.out.printf("%-3s %-17s %-5s %-20s %s%n",
+                "#", "Name", "Age", "Address", "Phone");
+        System.out.println("--------------------------------------------------------------");
+
+        int i = 1;
+        for (Contact c : contacts) {
+            System.out.printf("%-3d %-17s %-5d %-20s %s%n",
+                    i++,
+                    cut(c.getName(), 17),
+                    c.getAge(),
+                    cut(c.getAddress(), 20),
+                    c.getPhone()
+            );
+        }
+    }
+
+    private String cut(String s, int max) {
+            if (s == null) return "";
+            s = s.trim();
+            if (s.length() <= max) return s;
+            if (max <= 2) return s.substring(0, max);
+            return s.substring(0, max - 2) + "..";
+        }
 
     private int readInt(String prompt) {
         while (true) {
