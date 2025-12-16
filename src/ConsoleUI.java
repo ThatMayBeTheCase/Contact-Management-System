@@ -3,6 +3,7 @@ import java.util.List;
 
 public class ConsoleUI {
     private final ContactManager manager;
+    private final SearchService search;
     private final Scanner scanner = new Scanner(System.in);
     private User currentUser = new GuestUser("guest");
 
@@ -31,6 +32,7 @@ public class ConsoleUI {
 
     public ConsoleUI(ContactManager manager) {
         this.manager = manager;
+        this.search = new SearchService(manager);
     }
 
     public void run() {
@@ -99,16 +101,50 @@ public class ConsoleUI {
     }
 
     private void searchContacts() {
-        System.out.print("Search term: ");
-        String term = scanner.nextLine();
-        List<Contact> matches = manager.search(term);
-        if (matches.isEmpty()) {
-            System.out.println(INFO_COLOR + "No matches." + RESET);
+        System.out.println("Search mode:");
+        System.out.println("1) By last name (first match)");
+        System.out.println("2) By first name (all matches)");
+        System.out.println("3) By street (all matches)");
+        System.out.println("4) Free search (all matches)");
+        System.out.print("Choice: ");
+        String mode = scanner.nextLine().trim();
+
+        switch (mode) {
+            case "1" -> {
+                System.out.print("Last name: ");
+                String ln = scanner.nextLine();
+                Contact c = search.findFirstByLastName(ln);
+                if (c == null)
+                    System.out.println("No match.");
+                else
+                    System.out.println(c);
+            }
+            case "2" -> {
+                System.out.print("First name: ");
+                String fn = scanner.nextLine();
+                printList(search.findByFirstName(fn));
+            }
+            case "3" -> {
+                System.out.print("Street: ");
+                String st = scanner.nextLine();
+                printList(search.findByStreet(st));
+            }
+            case "4" -> {
+                System.out.print("Term: ");
+                String term = scanner.nextLine();
+                printList(search.freeSearch(term));
+            }
+            default -> System.out.println("Invalid search option.");
+        }
+    }
+
+    private void printList(List<Contact> list) {
+        if (list == null || list.isEmpty()) {
+            System.out.println("No matches.");
             return;
         }
-        for (Contact c : matches) {
+        for (Contact c : list)
             System.out.println(c);
-        }
     }
 
     private void handleLogin() {
@@ -171,7 +207,7 @@ public class ConsoleUI {
         }
         System.out.print("Name of contact to update: ");
         String name = scanner.nextLine();
-        Contact c = manager.findFirstByName(name);
+        Contact c = search.findFirstByName(name);
         if (c == null) {
             System.out.println("No contact found with that name.");
             return;
@@ -215,7 +251,7 @@ public class ConsoleUI {
 
         System.out.print("Name of contact to delete: ");
         String name = scanner.nextLine();
-        Contact c = manager.findFirstByName(name);
+        Contact c = search.findFirstByName(name);
         if (c == null) {
             System.out.println("No contact found with that name.");
             return;
