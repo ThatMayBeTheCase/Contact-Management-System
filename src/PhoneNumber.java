@@ -1,6 +1,6 @@
 public class PhoneNumber {
-    private String number;
-    private String type; // t.ex. "mobile", "work"
+    private final String number;
+    private final String type; // t.ex. "mobile", "work"
 
     public PhoneNumber(String number, String type) {
         this.number = number;
@@ -10,10 +10,11 @@ public class PhoneNumber {
     private String normalizeType(String type) {
         if (type == null) return "";
         String t = type.trim().toLowerCase();
-        if (t.equals("mobil")) t = "mobile";
-        if (t.equals("jobb")) t = "work";
-        if (t.equals("mobile") || t.equals("work")) return t;
-        return "";
+        if (t.equals("mobile") || t.equals("work")) {
+            return t;
+        } else {
+            return "";
+        }
         }
 
     public boolean isMobile() {
@@ -41,8 +42,8 @@ public class PhoneNumber {
         String displayType = switch (type) {
             case "mobile" -> "Mobile";
             case "work" -> "Work";
-            default -> type;
+            default -> "Phone";
         };
-        return displayType + ": " + (number == null ? " " : number);
+        return displayType + ": " + (number == null ? "" : number);
     }
 }
