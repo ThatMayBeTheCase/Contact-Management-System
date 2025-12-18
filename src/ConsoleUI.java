@@ -109,7 +109,7 @@ public class ConsoleUI {
                 String ln = scanner.nextLine();
                 Contact c = search.findFirstByLastName(ln);
                 if (c == null) {
-                    System.out.println("No match.");
+                    System.out.println(INFO_COLOR + "\nNo match." + RESET);
                 } else {
                     printContactsDetailed(List.of(c));
                     pressEnterToContinue();
@@ -136,10 +136,6 @@ public class ConsoleUI {
             }
             default -> System.out.println("Invalid search option.");
         }
-    }
-
-    private void printList(List<Contact> list) {
-        printContactsTable(list);
     }
 
     private void handleLogin() {
@@ -346,7 +342,7 @@ public class ConsoleUI {
             return;
         }
 
-        System.out.println(INFO_COLOR + "Found " + contacts.size() + " contacts." + RESET);
+        System.out.println(INFO_COLOR + "\nFound " + contacts.size() + " contacts." + RESET);
 
         int i = 1;
         for (Contact c : contacts) {
