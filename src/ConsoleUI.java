@@ -91,6 +91,7 @@ public class ConsoleUI {
 
     private void listContacts() {
         printContactsTable(manager.getContacts());
+        pressEnterToContinue();
     }
 
     private void searchContacts() {
@@ -108,32 +109,33 @@ public class ConsoleUI {
                 String ln = scanner.nextLine();
                 Contact c = search.findFirstByLastName(ln);
                 if (c == null) {
-                    System.out.println("No match.");
+                    System.out.println(INFO_COLOR + "\nNo match." + RESET);
                 } else {
-                    printContactsTable(List.of(c));
+                    printContactsDetailed(List.of(c));
+                    pressEnterToContinue();
                 }
+
             }
             case "2" -> {
                 System.out.print("First name: ");
                 String fn = scanner.nextLine();
-                printList(search.findByFirstName(fn));
+                printContactsDetailed(search.findByFirstName(fn));
+                pressEnterToContinue();
             }
             case "3" -> {
                 System.out.print("Street: ");
                 String st = scanner.nextLine();
-                printList(search.findByStreet(st));
+                printContactsDetailed(search.findByStreet(st));
+                pressEnterToContinue();
             }
             case "4" -> {
                 System.out.print("Term: ");
                 String term = scanner.nextLine();
-                printList(search.freeSearch(term));
+                printContactsDetailed(search.freeSearch(term));
+                pressEnterToContinue();
             }
             default -> System.out.println("Invalid search option.");
         }
-    }
-
-    private void printList(List<Contact> list) {
-        printContactsTable(list);
     }
 
     private void handleLogin() {
@@ -184,9 +186,6 @@ public class ConsoleUI {
 
         Contact c = new Contact(name, age, address);
 
-        /*// Add phone numbers
-        System.out.println("\n" + INFO_COLOR + "Add phone numbers (leave blank to skip):" + RESET);
-*/
         System.out.print("Mobile number: ");
         String mobile = scanner.nextLine().trim();
         if (!mobile.isBlank()) {
@@ -335,6 +334,29 @@ public class ConsoleUI {
                     c.getPhone()
             );
         }
+    }
+
+    private void printContactsDetailed(List<Contact> contacts) {
+        if (contacts.isEmpty()) {
+            System.out.println(INFO_COLOR + "No contact found." + RESET);
+            return;
+        }
+
+        System.out.println(INFO_COLOR + "\nFound " + contacts.size() + " contacts." + RESET);
+
+        int i = 1;
+        for (Contact c : contacts) {
+            System.out.println(INFO_COLOR + "\n#" + (i++) + RESET);
+            System.out.println("Name: " + c.getName());
+            System.out.println("Age: " + c.getAge());
+            System.out.println("Address: " + c.getAddress());
+            System.out.println(c.getPhone());
+        }
+    }
+
+    private void pressEnterToContinue() {
+        System.out.print(INFO_COLOR + "\nPress Enter to return to menu..." + RESET);
+        scanner.nextLine();
     }
 
     private String cut(String s, int max) {

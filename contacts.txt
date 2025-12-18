@@ -1,4 +1,10 @@
-Name: Moody|Age: 105|Address: Långholmen|Mobile: 1113444|Work: 777456
-Name: Timmy|Age: 18|Address: adadfadfadfadfadfa|Mobile: 3333|Work: 44444
-Name: Annalisa|Age: 23|Address: Enanannväg|Mobile: 0707604030|Work: 84372695
-Name: Sven|Age: 21|Address: Urvägen|Mobile: 4848484|Work: 343434
+Name: Ada Lovelace|Age: 36|Address: Binary Street 101|Mobile: 0701010101|Work: 081010101
+Name: Null Pointer|Age: 29|Address: Undefined Lane 0|Mobile: |Work: 080000000
+Name: Christopher Jonathan Alexander MontgomeryTheThird|Age: 52|Address: Professor Magnussens Long Address Avenue 114B|Mobile: 0705554433|Work: 031998877
+Name: Eva Compile-Error|Age: 41|Address: Missing Semicolon Road 7|Mobile: |Work: 084455667
+Name: Runtime Rick|Age: 19|Address: Heap Memory Block 12|Mobile: 07000001|Work: 
+Name: Fatima Stackoverflow|Age: 36|Address: Alvägen 200, Radhuslänga C|Mobile: 0722223333|Work: 0855566767
+Name: Gustav "Gurra" Garbage|Age: 45|Address: Java St. 1|Mobile: |Work: 
+Name: Helena von Schröder-Lindqvist|Age: 61|Address: Git Branch Avenue 45|Mobile: 0709998888|Work: 08111222333
+Name: Jenny TestCase_999|Age: 27|Address: Testvägen Testvägen Testvägen Testvägen 999|Mobile: 0701112223|Work: 089998887
+Name: Gustav Byte|Age: 33|Address: Cache Street 64|Mobile: 0706406406|Work: 
