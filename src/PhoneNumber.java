@@ -28,17 +28,6 @@ public class PhoneNumber {
         return number;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = normalizeType(type);
-    }
     // Method to check if phone number matches a search term
     public boolean matches(String term) {
         String lowerTerm = term.toLowerCase();

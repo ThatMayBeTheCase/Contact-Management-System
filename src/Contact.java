@@ -6,7 +6,7 @@ public class Contact {
     private String name;
     private int age;
     private String address;
-    private List<PhoneNumber> phoneNumbers;
+    private final List<PhoneNumber> phoneNumbers;
 
     public Contact(String name, int age, String address){
         this.name = name;
@@ -40,10 +40,6 @@ public class Contact {
 
     public void addPhoneNumber(PhoneNumber phoneNumber){
         this.phoneNumbers.add(phoneNumber);
-    }
-
-    public void removePhoneNumber(PhoneNumber phoneNumber){
-        this.phoneNumbers.remove(phoneNumber);
     }
 
     public void clearPhoneNumbers(){
