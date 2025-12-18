@@ -31,6 +31,13 @@ public class PhoneNumber {
 
     @Override
     public String toString() {
-        return type + ": " + number;
+        String t = (type == null) ? "" : type.trim();
+
+        if (t.equalsIgnoreCase("mobile") || t.equalsIgnoreCase("mobil")) t = "Mobile";
+        else if (t.equalsIgnoreCase("work") || t.equalsIgnoreCase("jobb")) t = "Work";
+        else if (!t.isEmpty()) t = t.substring(0, 1).toUpperCase() + t.substring(1).toLowerCase();
+
+        String n = (number == null) ? "" : number.trim();
+        return t.isEmpty() ? n : t + ": " + n;
     }
 }

@@ -15,14 +15,6 @@ public class Contact {
         this.phoneNumbers = new ArrayList<>();
     }
 
-    // Legacy constructor for backward compatibility
-    /*public Contact(String name, int age, String address, String phone){
-        this(name, age, address);
-        if (phone != null && !phone.isBlank()) {
-            this.phoneNumbers.add(new PhoneNumber(phone, "annat"));
-        }
-    }*/
-
     public String getName(){
         return name;
     }
@@ -68,14 +60,6 @@ public class Contact {
         }
         return sb.toString();
     }
-
-    // Legacy method for backward compatibility
-    /*public void setPhone(String phone){
-        phoneNumbers.clear();
-        if (phone != null && !phone.isBlank()) {
-            phoneNumbers.add(new PhoneNumber(phone, "annat"));
-        }
-    }*/
 
     @Override
     public String toString() {
