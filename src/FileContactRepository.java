@@ -57,24 +57,88 @@ public class FileContactRepository implements ContactRepository {
     }
 
      //Converts a contact to a string format for file storage
-    // Format: name|age|address|phone
+    // Format: Name: ***|Age: ***|Address: ***|Mobile: ***|Work: ***
     private String contactToString(Contact contact) {
-        return contact.getName() + "|" +
-               contact.getAge() + "|" +
-               contact.getAddress() + "|" +
-               contact.getPhone();
+        StringBuilder result = new StringBuilder();
+        result.append("Name: ").append(contact.getName())
+              .append("|Age: ").append(contact.getAge())
+              .append("|Address: ").append(contact.getAddress());
+
+        // Add phone numbers
+        String mobileNumber = "";
+        String workNumber = "";
+            // For each phone number, check its type and assign accordingly
+        for (PhoneNumber phone : contact.getPhoneNumbers()) {
+            if (phone.getType().equalsIgnoreCase("mobile") || phone.getType().equalsIgnoreCase("mobil")) {
+                mobileNumber = phone.getNumber();
+            } else if (phone.getType().equalsIgnoreCase("work") || phone.getType().equalsIgnoreCase("jobb")) {
+                workNumber = phone.getNumber();
+            }
+        }
+
+        result.append("|Mobile: ").append(mobileNumber)
+              .append("|Work: ").append(workNumber);
+
+        return result.toString();
     }
 
       // Parses a string line from file into a Contact object
     private Contact parseContact(String line) {
         try {
-            String[] parts = line.split("\\|");// Split string by pipe character: "John|30|Main St|123"
-            if (parts.length == 4) {  // Validate that we have exactly 4 fields
-                String name = parts[0];// First part: name
-                int age = Integer.parseInt(parts[1]);// Second part: age (convert to int)
-                String address = parts[2];// Third part: address
-                String phone = parts[3];// Fourth part: phone
-                return new Contact(name, age, address, phone);
+            String[] parts = line.split("\\|");
+
+            // New format: Name: |Age: |Address: |Mobile: |Work:
+            if (parts.length >= 3 && parts[0].startsWith("Name: ")) {
+                String name = parts[0].substring(6); // Remove "Name: " prefix
+                int age = Integer.parseInt(parts[1].substring(5).trim()); // Remove "Age: " prefix
+                String address = parts[2].substring(9).trim(); // Remove "Address: " prefix
+
+                Contact contact = new Contact(name, age, address);
+
+                // Parse Mobile number if it exists
+                if (parts.length >= 4 && parts[3].startsWith("Mobile: ")) {
+                    String mobile = parts[3].substring(8).trim();
+                    if (!mobile.isBlank()) {
+                        contact.addPhoneNumber(new PhoneNumber(mobile, "mobile"));
+                    }
+                }
+
+                // Parse Work number if it exists
+                if (parts.length >= 5 && parts[4].startsWith("Work: ")) {
+                    String work = parts[4].substring(6).trim();
+                    if (!work.isBlank()) {
+                        contact.addPhoneNumber(new PhoneNumber(work, "work"));
+                    }
+                }
+
+                return contact;
+            }
+            // Old format 1: name|age|address|phone1:type1;phone2:type2
+            else if (parts.length >= 3) {
+                String name = parts[0];
+                int age = Integer.parseInt(parts[1]);
+                String address = parts[2];
+
+                Contact contact = new Contact(name, age, address);
+
+                // Parse phone numbers if they exist
+                if (parts.length >= 4 && !parts[3].isBlank()) {
+                    String phonePart = parts[3];
+                    String[] phones = phonePart.split(";");
+                    for (String phone : phones) {
+                        if (!phone.isBlank()) {
+                            String[] phoneParts = phone.split(":");
+                            if (phoneParts.length == 2) {
+                                contact.addPhoneNumber(new PhoneNumber(phoneParts[0], phoneParts[1]));
+                            } else {
+                                // Legacy format: just a number without type
+                                contact.addPhoneNumber(new PhoneNumber(phone, "mobile"));
+                            }
+                        }
+                    }
+                }
+
+                return contact;
             }
         } catch (Exception e) {
             System.err.println("Error parsing contact line: " + line);

@@ -1,6 +1,3 @@
-Timmy|1500|Gitcommitsvägen|071234567
-Muammar|99|Vscodesdalen 1|88888888
-Moody|91|Javastrand 4|4343434343434
-Josefin Superlångtefternamn|32|Enjättelångadressssss 143|0707807315
-Ettnamn|54|Enannanadress|9594939293
-Josefin Vingeskog|32|Svengård|0707807315
+Name: Moody|Age: 105|Address: Långholmen|Mobile: 070707079|Work: 2342342342342
+Name: Timmy|Age: 18|Address: adadfadfadfadfadfa|Mobile: sdfsdfsdfsf|Work: 
+Name: Josefin|Age: 21|Address: adfasdfadf|Mobile: 134134134134|Work: 134134134134
