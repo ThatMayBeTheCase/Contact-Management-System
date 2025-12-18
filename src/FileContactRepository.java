@@ -69,11 +69,8 @@ public class FileContactRepository implements ContactRepository {
         String workNumber = "";
             // For each phone number, check its type and assign accordingly
         for (PhoneNumber phone : contact.getPhoneNumbers()) {
-            if (phone.getType().equalsIgnoreCase("mobile") || phone.getType().equalsIgnoreCase("mobil")) {
-                mobileNumber = phone.getNumber();
-            } else if (phone.getType().equalsIgnoreCase("work") || phone.getType().equalsIgnoreCase("jobb")) {
-                workNumber = phone.getNumber();
-            }
+            if (phone.isMobile()) mobileNumber = phone.getNumber();
+            else if (phone.isWork()) workNumber = phone.getNumber();
         }
 
         result.append("|Mobile: ").append(mobileNumber)

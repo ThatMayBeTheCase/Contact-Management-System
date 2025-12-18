@@ -251,9 +251,9 @@ public class ConsoleUI {
         PhoneNumber existingWork = null;
 
         for (PhoneNumber pn : c.getPhoneNumbers()) {
-            if (pn.getType().equalsIgnoreCase("mobile") || pn.getType().equalsIgnoreCase("mobil")) {
+            if (pn.isMobile()) {
                 existingMobile = pn;
-            } else if (pn.getType().equalsIgnoreCase("work") || pn.getType().equalsIgnoreCase("jobb")) {
+            } else if (pn.isWork()) {
                 existingWork = pn;
             }
         }
