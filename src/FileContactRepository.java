@@ -69,11 +69,8 @@ public class FileContactRepository implements ContactRepository {
         String workNumber = "";
             // For each phone number, check its type and assign accordingly
         for (PhoneNumber phone : contact.getPhoneNumbers()) {
-            if (phone.getType().equalsIgnoreCase("mobile") || phone.getType().equalsIgnoreCase("mobil")) {
-                mobileNumber = phone.getNumber();
-            } else if (phone.getType().equalsIgnoreCase("work") || phone.getType().equalsIgnoreCase("jobb")) {
-                workNumber = phone.getNumber();
-            }
+            if (phone.isMobile()) mobileNumber = phone.getNumber();
+            else if (phone.isWork()) workNumber = phone.getNumber();
         }
 
         result.append("|Mobile: ").append(mobileNumber)
@@ -194,12 +191,11 @@ public class FileContactRepository implements ContactRepository {
     }
 
     @Override
-    public void updateContact(Contact contact, String newName, int newAge, String newAddress, String newPhone) {
+    public void updateContact(Contact contact, String newName, int newAge, String newAddress) {
         // Update contact fields
         contact.setName(newName);
         contact.setAge(newAge);
         contact.setAddress(newAddress);
-        contact.setPhone(newPhone);
         // Save changes to file
         saveToFile();
     }

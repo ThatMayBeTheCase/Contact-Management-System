@@ -6,21 +6,13 @@ public class Contact {
     private String name;
     private int age;
     private String address;
-    private List<PhoneNumber> phoneNumbers;
+    private final List<PhoneNumber> phoneNumbers;
 
     public Contact(String name, int age, String address){
         this.name = name;
         this.age = age;
         this.address = address;
         this.phoneNumbers = new ArrayList<>();
-    }
-
-    // Legacy constructor for backward compatibility
-    public Contact(String name, int age, String address, String phone){
-        this(name, age, address);
-        if (phone != null && !phone.isBlank()) {
-            this.phoneNumbers.add(new PhoneNumber(phone, "annat"));
-        }
     }
 
     public String getName(){
@@ -50,10 +42,6 @@ public class Contact {
         this.phoneNumbers.add(phoneNumber);
     }
 
-    public void removePhoneNumber(PhoneNumber phoneNumber){
-        this.phoneNumbers.remove(phoneNumber);
-    }
-
     public void clearPhoneNumbers(){
         this.phoneNumbers.clear();
     }
@@ -67,14 +55,6 @@ public class Contact {
             sb.append(phoneNumbers.get(i).toString());
         }
         return sb.toString();
-    }
-
-    // Legacy method for backward compatibility
-    public void setPhone(String phone){
-        phoneNumbers.clear();
-        if (phone != null && !phone.isBlank()) {
-            phoneNumbers.add(new PhoneNumber(phone, "annat"));
-        }
     }
 
     @Override

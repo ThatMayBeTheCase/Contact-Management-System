@@ -251,9 +251,9 @@ public class ConsoleUI {
         PhoneNumber existingWork = null;
 
         for (PhoneNumber pn : c.getPhoneNumbers()) {
-            if (pn.getType().equalsIgnoreCase("mobile") || pn.getType().equalsIgnoreCase("mobil")) {
+            if (pn.isMobile()) {
                 existingMobile = pn;
-            } else if (pn.getType().equalsIgnoreCase("work") || pn.getType().equalsIgnoreCase("jobb")) {
+            } else if (pn.isWork()) {
                 existingWork = pn;
             }
         }
@@ -280,7 +280,7 @@ public class ConsoleUI {
             c.addPhoneNumber(new PhoneNumber(finalWork, "work"));
         }
 
-        manager.updateContact(c, newName, newAge, newAddress, c.getPhone());
+        manager.updateContact(c, newName, newAge, newAddress);
         System.out.println(SUCCESS_COLOR + "\nContact updated!" + RESET);
         System.out.println("Name: " + c.getName() + ", Age: " + c.getAge() + ", Address: " + c.getAddress());
         if (!c.getPhoneNumbers().isEmpty()) {

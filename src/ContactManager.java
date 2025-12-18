@@ -19,16 +19,8 @@ public class ContactManager {
         return repository.getContacts();
     }
 
-    public Contact findFirstByName(String name) {
-        return repository.findFirstByName(name);
-    }
-
-    public List<Contact> search(String term) {
-        return repository.search(term);
-    }
-
-    public void updateContact(Contact contact, String newName, int newAge, String newAddress, String newPhone) {
-        repository.updateContact(contact, newName, newAge, newAddress, newPhone);
+    public void updateContact(Contact contact, String newName, int newAge, String newAddress) {
+        repository.updateContact(contact, newName, newAge, newAddress);
     }
 
     public void deleteContact(Contact contact) {
