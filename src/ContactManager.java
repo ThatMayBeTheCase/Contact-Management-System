@@ -27,8 +27,8 @@ public class ContactManager {
         return repository.search(term);
     }
 
-    public void updateContact(Contact contact, String newName, int newAge, String newAddress, String newPhone) {
-        repository.updateContact(contact, newName, newAge, newAddress, newPhone);
+    public void updateContact(Contact contact, String newName, int newAge, String newAddress) {
+        repository.updateContact(contact, newName, newAge, newAddress);
     }
 
     public void deleteContact(Contact contact) {

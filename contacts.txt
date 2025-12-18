@@ -1,3 +1,5 @@
-Name: Moody|Age: 105|Address: Långholmen|Mobile: 070707079|Work: 2342342342342
-Name: Timmy|Age: 18|Address: adadfadfadfadfadfa|Mobile: sdfsdfsdfsf|Work: 
-Name: Josefin|Age: 21|Address: adfasdfadf|Mobile: 134134134134|Work: 134134134134
+Name: Moody|Age: 105|Address: Långholmen|Mobile: 1113444|Work: 777456
+Name: Timmy|Age: 18|Address: adadfadfadfadfadfa|Mobile: 3333|Work: 44444
+Name: Josefin|Age: 21|Address: adfasdfadf|Mobile: 11111|Work: 22222
+Name: Josefin|Age: 32|Address: Svengård|Mobile: 0707807315|Work: 0707807315
+Name: Josefin|Age: 32|Address: Svengård|Mobile: 0707070707|Work: 78474747474

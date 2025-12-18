@@ -16,12 +16,12 @@ public class Contact {
     }
 
     // Legacy constructor for backward compatibility
-    public Contact(String name, int age, String address, String phone){
+    /*public Contact(String name, int age, String address, String phone){
         this(name, age, address);
         if (phone != null && !phone.isBlank()) {
             this.phoneNumbers.add(new PhoneNumber(phone, "annat"));
         }
-    }
+    }*/
 
     public String getName(){
         return name;
@@ -70,12 +70,12 @@ public class Contact {
     }
 
     // Legacy method for backward compatibility
-    public void setPhone(String phone){
+    /*public void setPhone(String phone){
         phoneNumbers.clear();
         if (phone != null && !phone.isBlank()) {
             phoneNumbers.add(new PhoneNumber(phone, "annat"));
         }
-    }
+    }*/
 
     @Override
     public String toString() {

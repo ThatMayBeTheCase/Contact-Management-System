@@ -18,7 +18,7 @@ public interface ContactRepository {
     // Searches contacts by term (name, address, phone)
     List<Contact> search(String term);
     // Updates a contact with new values
-    void updateContact(Contact contact, String newName, int newAge, String newAddress, String newPhone);
+    void updateContact(Contact contact, String newName, int newAge, String newAddress);
 
     // Deletes a contact from the repository
     void deleteContact(Contact contact);
