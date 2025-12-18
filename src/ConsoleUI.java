@@ -182,13 +182,29 @@ public class ConsoleUI {
         System.out.print("Address: ");
         String address = scanner.nextLine();
 
-        System.out.print("Phone: ");
-        String phone = scanner.nextLine();
+        Contact c = new Contact(name, age, address);
 
-        Contact c = new Contact(name, age, address, phone);
+        /*// Add phone numbers
+        System.out.println("\n" + INFO_COLOR + "Add phone numbers (leave blank to skip):" + RESET);
+*/
+        System.out.print("Mobile number: ");
+        String mobile = scanner.nextLine().trim();
+        if (!mobile.isBlank()) {
+            c.addPhoneNumber(new PhoneNumber(mobile, "mobile"));
+        }
+
+        System.out.print("Work number: ");
+        String work = scanner.nextLine().trim();
+        if (!work.isBlank()) {
+            c.addPhoneNumber(new PhoneNumber(work, "work"));
+        }
+
         manager.addContact(c);
         System.out.println(SUCCESS_COLOR + "\nContact added!" + RESET);
-        System.out.println("Name: " + c.getName() + ", Age: " + c.getAge() + ", Address: " + c.getAddress() + ", Phone: " + c.getPhone());
+        System.out.println("Name: " + c.getName() + ", Age: " + c.getAge() + ", Address: " + c.getAddress());
+        if (!c.getPhoneNumbers().isEmpty()) {
+            System.out.println("Phone numbers: " + c.getPhone());
+        }
         System.out.println();
     }
 
@@ -227,14 +243,49 @@ public class ConsoleUI {
         if (newAddress.isBlank())
             newAddress = c.getAddress();
 
-        System.out.print("New phone [" + c.getPhone() + "]: ");
-        String newPhone = scanner.nextLine();
-        if (newPhone.isBlank())
-            newPhone = c.getPhone();
+        // Update phone numbers
+        System.out.println("\n" + INFO_COLOR + "Update phone numbers (leave blank to keep current):" + RESET);
 
-        manager.updateContact(c, newName, newAge, newAddress, newPhone);
+        // Find existing numbers by type
+        PhoneNumber existingMobile = null;
+        PhoneNumber existingWork = null;
+
+        for (PhoneNumber pn : c.getPhoneNumbers()) {
+            if (pn.getType().equalsIgnoreCase("mobile") || pn.getType().equalsIgnoreCase("mobil")) {
+                existingMobile = pn;
+            } else if (pn.getType().equalsIgnoreCase("work") || pn.getType().equalsIgnoreCase("jobb")) {
+                existingWork = pn;
+            }
+        }
+
+        String currentMobile = existingMobile != null ? existingMobile.getNumber() : "";
+        String currentWork = existingWork != null ? existingWork.getNumber() : "";
+
+        System.out.print("Mobile number [" + currentMobile + "]: ");
+        String newMobile = scanner.nextLine().trim();
+
+        System.out.print("Work number [" + currentWork + "]: ");
+        String newWork = scanner.nextLine().trim();
+
+        // Update phone numbers
+        c.clearPhoneNumbers();
+
+        String finalMobile = newMobile.isBlank() ? currentMobile : newMobile;
+        String finalWork = newWork.isBlank() ? currentWork : newWork;
+
+        if (!finalMobile.isBlank()) {
+            c.addPhoneNumber(new PhoneNumber(finalMobile, "mobile"));
+        }
+        if (!finalWork.isBlank()) {
+            c.addPhoneNumber(new PhoneNumber(finalWork, "work"));
+        }
+
+        manager.updateContact(c, newName, newAge, newAddress, c.getPhone());
         System.out.println(SUCCESS_COLOR + "\nContact updated!" + RESET);
-        System.out.println("Name: " + c.getName() + ", Age: " + c.getAge() + ", Address: " + c.getAddress() + ", Phone: " + c.getPhone());
+        System.out.println("Name: " + c.getName() + ", Age: " + c.getAge() + ", Address: " + c.getAddress());
+        if (!c.getPhoneNumbers().isEmpty()) {
+            System.out.println("Phone numbers: " + c.getPhone());
+        }
         System.out.println();
     }
     private void deleteContact() {

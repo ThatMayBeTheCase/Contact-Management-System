@@ -61,7 +61,16 @@ public class SearchService {
 
     // Free search helper
     private boolean matches (Contact c, String needle) {
-        return norm(c.getName()).contains(needle) || norm(c.getAddress()).contains(needle) || norm(c.getPhone()).contains(needle);
+        if (norm(c.getName()).contains(needle) || norm(c.getAddress()).contains(needle)) {
+            return true;
+        }
+        // Search through all phone numbers
+        for (PhoneNumber phone : c.getPhoneNumbers()) {
+            if (phone.matches(needle)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
